@@ -19,8 +19,10 @@ func CreateNewFeedTime(w http.ResponseWriter, r *http.Request) {
     req_body, _ := ioutil.ReadAll(r.Body)
     json.Unmarshal(req_body, &ft)
 
+    mut.Lock()
     feeding_times = ft
     json.NewEncoder(w).Encode(feeding_times)
+    mut.Unlock()
 }
 
 /**
@@ -30,18 +32,22 @@ func ReturnSingleFeedingTime(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
     key := vars["id"]
 
+    mut.Lock()
     for _, ft := range feeding_times {
         if ft.ID == key {
             json.NewEncoder(w).Encode(ft)
         }
     }
+    mut.Unlock()
 }
 
 /**
  * @brief:  Handle for recieving all the feeding times.
  **/
 func ReturnAllFeedingTimes(w http.ResponseWriter, r *http.Request) {
+    mut.Lock()
     json.NewEncoder(w).Encode(feeding_times)
+    mut.Unlock()
 }
 
 /**

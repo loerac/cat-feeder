@@ -2,17 +2,19 @@ package main
 
 import (
     "fmt"
+    "sync"
     "time"
 )
 
 type FeedingTimes struct {
-    ID      string `json:"id"`
-    Hour    int `json:"hour"`
-    Minute  int `json:"minute"`
+    ID      string  `json:"id"`
+    Hour    int     `json:"hour"`
+    Minute  int     `json:"minute"`
 }
 
 var has_been_fed bool = false
 var feeding_times []FeedingTimes
+var mut sync.Mutex
 
 /**
  * @brief:  Check if it's time to feed the cat
@@ -21,7 +23,10 @@ var feeding_times []FeedingTimes
  *          Else, false
  **/
 func TimeToFeedCat() bool {
+    mut.Lock()
+    defer mut.Unlock()
     ts := time.Now()
+
     for i := range feeding_times {
         if  feeding_times[i].Hour == ts.Hour() &&
             feeding_times[i].Minute == ts.Minute() {
