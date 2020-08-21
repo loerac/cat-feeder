@@ -1,5 +1,6 @@
 *
 !.*
-!*.go
+!catfeeder-app/
+!catfeeder-machine/*.go
 !*.md
 !Makefile

@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Briefcase-Version: 0.3.3
+Name: catfeeder
+Formal-Name: Cat Feeder
+App-ID: com.example.catfeeder
+Version: 0.0.1
+Home-page: https://example.com/catfeeder
+Author: Christian Loera
+Author-email: christian@example.com
+Summary: An app to feed the cats

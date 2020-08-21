@@ -1,0 +1,49 @@
+[tool.briefcase]
+project_name = "Cat Feeder"
+bundle = "com.example"
+version = "0.0.1"
+url = "https://example.com/catfeeder"
+license = "BSD license"
+author = 'Christian Loera'
+author_email = "christian@example.com"
+
+[tool.briefcase.app.catfeeder]
+formal_name = "Cat Feeder"
+description = "An app to feed the cats"
+icon = "src/catfeeder/resources/catfeeder"
+sources = ['src/catfeeder']
+requires = []
+
+
+[tool.briefcase.app.catfeeder.macOS]
+requires = [
+    'toga-cocoa>=0.3.0.dev20',
+]
+
+[tool.briefcase.app.catfeeder.linux]
+requires = [
+    'toga-gtk>=0.3.0.dev20',
+]
+system_requires = [
+    'libgirepository1.0-dev',
+    'libcairo2-dev',
+    'libpango1.0-dev',
+    'libwebkitgtk-3.0-0',
+    'gir1.2-webkit-3.0',
+]
+
+[tool.briefcase.app.catfeeder.windows]
+requires = [
+    'toga-winforms>=0.3.0.dev20',
+]
+
+# Mobile deployments
+[tool.briefcase.app.catfeeder.iOS]
+requires = [
+    'toga-iOS>=0.3.0.dev20',
+]
+
+[tool.briefcase.app.catfeeder.android]
+requires = [
+    'toga-android>=0.3.0.dev20',
+]
