@@ -10,6 +10,14 @@ import (
     "github.com/gorilla/mux"
 )
 
+func PrintFeedingTimes(feeding_times []FeedingTimes) {
+    for _, ft := range feeding_times {
+        fmt.Printf("{ ID(%s) -- Hour(%d) -- Minute(%d) } ",
+            ft.ID, ft.Hour, ft.Minute)
+    }
+    fmt.Println()
+}
+
 /**
  * @brief:  Handle for creating a new feeding time proposal.
  **/
@@ -23,6 +31,9 @@ func CreateNewFeedTime(w http.ResponseWriter, r *http.Request) {
     feeding_times = ft
     json.NewEncoder(w).Encode(feeding_times)
     mut.Unlock()
+
+    fmt.Print("Recieved feeding times: ")
+    PrintFeedingTimes(ft)
 }
 
 /**
@@ -36,6 +47,10 @@ func ReturnSingleFeedingTime(w http.ResponseWriter, r *http.Request) {
     for _, ft := range feeding_times {
         if ft.ID == key {
             json.NewEncoder(w).Encode(ft)
+            fmt.Print("Sending feeding time: ")
+            feeding := []FeedingTimes{ft}
+            PrintFeedingTimes(feeding)
+            break
         }
     }
     mut.Unlock()
@@ -47,6 +62,8 @@ func ReturnSingleFeedingTime(w http.ResponseWriter, r *http.Request) {
 func ReturnAllFeedingTimes(w http.ResponseWriter, r *http.Request) {
     mut.Lock()
     json.NewEncoder(w).Encode(feeding_times)
+    fmt.Print("Sending feeding times: ")
+    PrintFeedingTimes(feeding_times)
     mut.Unlock()
 }
 
