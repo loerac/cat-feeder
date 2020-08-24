@@ -4,6 +4,8 @@ import (
     "fmt"
     "sync"
     "time"
+
+	"gobot.io/x/gobot/platforms/raspi"
 )
 
 type FeedingTimes struct {
@@ -38,6 +40,11 @@ func TimeToFeedCat() bool {
 }
 
 func main() {
+    raspi_adapter := raspi.NewAdaptor()
+    if raspi_adapter == nil {
+        fmt.Println("Error setting new adaptor for raspberry pi")
+    }
+
     /* Run REST API */
     go HandleRequests()
 
@@ -46,6 +53,7 @@ func main() {
         for {
             if TimeToFeedCat() && !has_been_fed {
                 fmt.Println("Time to feed cats")
+                RotateMotor()
                 has_been_fed = true
             } else if !TimeToFeedCat() {
                 fmt.Println("Not time to feed cats")
