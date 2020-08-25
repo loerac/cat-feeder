@@ -19,6 +19,7 @@
   * Over WiFi?
   * Bluetooth?
   * Host app on a webserver and let the user navigate to webpage?
+- [ ] loera - 009: Update `/feedNow` REST API to use the servo motors
 
 # App
 - [ ] 004: Continue development: 
