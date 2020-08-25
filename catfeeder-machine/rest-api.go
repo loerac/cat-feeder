@@ -39,7 +39,7 @@ func CreateNewFeedTime(w http.ResponseWriter, r *http.Request) {
 /***
  * @brief:  Handle to feed the cat.
  ***/
-func CreateFeednow(w http.ResponseWriter, r *http.Request) {
+func CreateFeedNow(w http.ResponseWriter, r *http.Request) {
     fmt.Println("Place holder to feed cat now, will update once TID003 is complete")
 }
 
@@ -93,7 +93,7 @@ func HandleRequests() {
     myRouter := mux.NewRouter().StrictSlash(true)
     myRouter.HandleFunc("/", HomePage)
     myRouter.HandleFunc("/feedingTime", CreateNewFeedTime).Methods("POST")
-    myRouter.HandleFunc("/feedNow", CreateFeednow).Methods("POST")
+    myRouter.HandleFunc("/feedNow", CreateFeedNow).Methods("POST")
     myRouter.HandleFunc("/feedingTimes", ReturnAllFeedingTimes).Methods("GET")
     myRouter.HandleFunc("/feedingTime/{id}", ReturnSingleFeedingTime).Methods("GET")
     log.Fatal(http.ListenAndServe(":6969", myRouter))
