@@ -40,6 +40,13 @@ func CreateNewFeedTime(w http.ResponseWriter, r *http.Request) {
     rest_log.Println("Received feeding times:" + FeedingTimeStr(ft))
 }
 
+/***
+ * @brief:  Handle to feed the cat.
+ ***/
+func CreateFeednow(w http.ResponseWriter, r *http.Request) {
+    fmt.Println("Place holder to feed cat now, will update once TID003 is complete")
+}
+
 /**
  * @brief:  Handle for recieving a specific feeding time.
  **/
@@ -75,6 +82,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintln(w, "Cat Feeding times")
     fmt.Fprintln(w, "-----------------------")
     fmt.Fprintln(w, "Create new feeding times with '/feedingTime'")
+    fmt.Fprintln(w, "Create request to feed cat now with '/feedNow'")
     fmt.Fprintln(w, "Return all feeding time with '/feedingTimes'")
     fmt.Fprintln(w, "Return single feeding time with '/feedingTime/<ID>'")
 }
@@ -88,6 +96,7 @@ func HandleRequests() {
     myRouter := mux.NewRouter().StrictSlash(true)
     myRouter.HandleFunc("/", HomePage)
     myRouter.HandleFunc("/feedingTime", CreateNewFeedTime).Methods("POST")
+    myRouter.HandleFunc("/feedNow", CreateFeednow).Methods("POST")
     myRouter.HandleFunc("/feedingTimes", ReturnAllFeedingTimes).Methods("GET")
     myRouter.HandleFunc("/feedingTime/{id}", ReturnSingleFeedingTime).Methods("GET")
 
