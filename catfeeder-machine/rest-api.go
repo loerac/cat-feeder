@@ -48,7 +48,7 @@ func CreateFeedNow(w http.ResponseWriter, r *http.Request) {
 }
 
 /**
- * @brief:  Handle for recieving a specific feeding time.
+ * @brief:  Handle for returning a specific feeding time.
  **/
 func ReturnSingleFeedingTime(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
@@ -66,7 +66,7 @@ func ReturnSingleFeedingTime(w http.ResponseWriter, r *http.Request) {
 }
 
 /**
- * @brief:  Handle for recieving all the feeding times.
+ * @brief:  Handle for returning all the feeding times.
  **/
 func ReturnAllFeedingTimes(w http.ResponseWriter, r *http.Request) {
     mut.Lock()
@@ -76,7 +76,7 @@ func ReturnAllFeedingTimes(w http.ResponseWriter, r *http.Request) {
 }
 
 /**
- * @brief:  Handle to recieving info on REST API.
+ * @brief:  Handle to returning info on REST API.
  **/
 func HomePage(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintln(w, "Cat Feeding times")
