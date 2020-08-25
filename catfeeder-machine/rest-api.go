@@ -4,18 +4,23 @@ import (
     "fmt"
     "io/ioutil"
     "encoding/json"
-    "log"
     "net/http"
 
     "github.com/gorilla/mux"
 )
 
-func PrintFeedingTimes(feeding_times []FeedingTimes) {
+var rest_log *Logger
+
+func FeedingTimeStr(feeding_times []FeedingTimes) string {
+    ft_str := ""
+
     for _, ft := range feeding_times {
-        fmt.Printf("{ ID(%s) -- Hour(%d) -- Minute(%d) } ",
-            ft.ID, ft.Hour, ft.Minute)
+        ft_str += fmt.Sprintf(" { ID(%s) -- Hour(%d) -- Minute(%d) } ",
+            ft.ID, ft.Hour, ft.Minute,
+        )
     }
-    fmt.Println()
+
+    return ft_str
 }
 
 /**
@@ -32,8 +37,7 @@ func CreateNewFeedTime(w http.ResponseWriter, r *http.Request) {
     json.NewEncoder(w).Encode(feeding_times)
     mut.Unlock()
 
-    fmt.Print("Recieved feeding times: ")
-    PrintFeedingTimes(ft)
+    rest_log.Println("Recieved feeding times:" + FeedingTimeStr(ft))
 }
 
 /**
@@ -47,9 +51,7 @@ func ReturnSingleFeedingTime(w http.ResponseWriter, r *http.Request) {
     for _, ft := range feeding_times {
         if ft.ID == key {
             json.NewEncoder(w).Encode(ft)
-            fmt.Print("Sending feeding time: ")
-            feeding := []FeedingTimes{ft}
-            PrintFeedingTimes(feeding)
+            rest_log.Println("Sending feeding time:" + FeedingTimeStr([]FeedingTimes{ft}))
             break
         }
     }
@@ -62,8 +64,7 @@ func ReturnSingleFeedingTime(w http.ResponseWriter, r *http.Request) {
 func ReturnAllFeedingTimes(w http.ResponseWriter, r *http.Request) {
     mut.Lock()
     json.NewEncoder(w).Encode(feeding_times)
-    fmt.Print("Sending feeding times: ")
-    PrintFeedingTimes(feeding_times)
+    rest_log.Println("Sending feeding times:" + FeedingTimeStr(feeding_times))
     mut.Unlock()
 }
 
@@ -82,10 +83,14 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
  * @brief:  Handle to monitor all the CRUD methods.
  **/
 func HandleRequests() {
+    rest_log = NewLogger("rest-api")
+
     myRouter := mux.NewRouter().StrictSlash(true)
     myRouter.HandleFunc("/", HomePage)
     myRouter.HandleFunc("/feedingTime", CreateNewFeedTime).Methods("POST")
     myRouter.HandleFunc("/feedingTimes", ReturnAllFeedingTimes).Methods("GET")
     myRouter.HandleFunc("/feedingTime/{id}", ReturnSingleFeedingTime).Methods("GET")
-    log.Fatal(http.ListenAndServe(":6969", myRouter))
+
+    rest_log.Println("Listening on 127.0.0.1:6969")
+    rest_log.Println(http.ListenAndServe(":6969", myRouter).Error())
 }

@@ -2,8 +2,6 @@ package main
 
 import (
     "fmt"
-    "log"
-    "os"
     "sync"
     "time"
 )
@@ -17,7 +15,6 @@ type FeedingTimes struct {
 var has_been_fed bool = false
 var feeding_times []FeedingTimes
 var mut sync.Mutex
-var logger *log.Logger
 
 /**
  * @brief:  Check if it's time to feed the cat
@@ -40,15 +37,15 @@ func TimeToFeedCat() bool {
     return false
 }
 
+func init() {
+    if err := LoggerInit(); err != nil {
+        fmt.Println("Failed to initialize log rollover:", err)
+    }
+}
+
 func main() {
     /* Open log file */
-    /* TODO: perform log rollover */
-    f, err := os.OpenFile("/tmp/cat-feeder.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-    if err != nil {
-        log.Fatalf("Error opening file: %v", err)
-    }
-    defer f.Close()
-    logger := log.New(f, "cat-feeder - ", log.LstdFlags|log.Lmsgprefix)
+    cat_log := NewLogger("cat-manager")
 
     /* Run REST API */
     go HandleRequests()
@@ -57,10 +54,10 @@ func main() {
     go func() {
         for {
             if TimeToFeedCat() && !has_been_fed {
-                logger.Println("Time to feed cats")
+                cat_log.Println("Time to feed cats")
                 has_been_fed = true
             } else if !TimeToFeedCat() {
-                logger.Println("Not time to feed cats")
+                cat_log.Println("Not time to feed cats")
                 has_been_fed = false
             }
             time.Sleep(10 * time.Second)
