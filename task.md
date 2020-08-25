@@ -31,3 +31,4 @@
 - [ ] 006: Add button to feed
   * Send command to feed cat
   * Tell Christian to finish up the REST API to start this
+- [ ] 010: Display last time fed on a label
