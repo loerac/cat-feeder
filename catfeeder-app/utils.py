@@ -1,4 +1,7 @@
+import commonLibs
 import logging
+
+common = commonLibs.CommonLibs()
 
 ###
 # @brief:   Create new logging object with the identity of `name`
@@ -9,7 +12,7 @@ import logging
 ###
 def Applogger(name):
     logging.basicConfig(level=logging.INFO,
-                        filename='/tmp/cat-feeder.log',
+                        filename=common.GetLogFilepath(),
                         format='%(asctime)s %(name)s - %(message)s',
                         datefmt='%Y/%m/%d %H:%M:%S'
                        )
