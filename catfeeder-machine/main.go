@@ -37,9 +37,20 @@ func TimeToFeedCat() bool {
     return false
 }
 
+/***
+ * @brief:  Initialize features in cat-feeder machine
+ *          - Common
+ *          - Golog
+ ***/
 func init() {
-    if err := InitGolog(); err != nil {
-        fmt.Println("Failed to initialize log rollover:", err)
+    err := InitCommon()
+    if err != nil {
+        fmt.Println("Failed to initialize Common:", err)
+    }
+
+    err = InitGolog()
+    if err != nil {
+        fmt.Println("Failed to initialize Golog:", err)
     }
 }
 

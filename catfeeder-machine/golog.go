@@ -13,7 +13,7 @@ type Golog struct {
     Prefix      string
 }
 
-const LogFilename string = "/tmp/cat-feeder.log"
+var log_fpath string = ""
 
 /**
  * @brief:  Checks to see if the log file is present from a previous
@@ -22,11 +22,13 @@ const LogFilename string = "/tmp/cat-feeder.log"
  * @return: nil on success, else error
  **/
 func InitGolog() error {
-    finfo, err := os.Stat(LogFilename)
+    log_fpath = GetLogFilepath()
+
+    finfo, err := os.Stat(log_fpath)
     if err == nil {
-        path := strings.Split(LogFilename, finfo.Name())[0]
+        path := strings.Split(log_fpath, finfo.Name())[0]
         err = os.Rename(
-            LogFilename,
+            log_fpath,
             path + time.Now().Format("20060102T150405") + "-" + finfo.Name(),
         )
         if err != nil {
@@ -46,7 +48,7 @@ func InitGolog() error {
  * @return: New logger, nil if error
  **/
 func OpenGolog(prefix string) *Golog {
-    fpath, err := os.OpenFile(LogFilename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
+    fpath, err := os.OpenFile(log_fpath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
 
     if err != nil {
         return nil
