@@ -1,9 +1,13 @@
 """
 An app to feed the cats
 """
-import toga
-import requests
+import errno
 import json
+import requests
+import os
+import toga
+import utils
+from requests.exceptions import ConnectionError
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
@@ -13,6 +17,7 @@ RECIEVE_A_TIME = BASE_URL + "/feedingTime"
 RECIEVE_ALL_TIMES = BASE_URL + "/feedingTimes"
 
 feeding_times = []
+logger = utils.Applogger('cat-app')
 
 class CatFeeder(toga.App):
     # TODO: Come up with better variable names
@@ -79,9 +84,9 @@ class CatFeeder(toga.App):
 
         self.send_butt.enabled = True
         feeding_times.append((self.hour_input.value,self.min_input.value))
-        time = self.prettyTime(feeding_times[len(feeding_times) - 1][0], feeding_times[len(feeding_times) - 1][1])
+        time = utils.PrettyTime(feeding_times[len(feeding_times) - 1])
         self.time_table.data.insert(0, time)
-        print("New Time:", feeding_times[len(feeding_times) - 1])
+        logger.error("New Time: " + str(time))
         self.error_label.text = ""
 
     ###
@@ -116,48 +121,44 @@ class CatFeeder(toga.App):
                 data = str(json.dumps(send_feeding_times))
             )
         except OSError as err:
-            print("OSError: Uh oh! Looks like you are in trouble...", err)
+            logger.error("OSError: Uh oh! Looks like you are in trouble..." + utils.StrError(err))
             self.error_label.text = "Error on communicating with machine"
             return
 
         resp = req.text
-        print("Sent feeding time:", resp)
+        logger.error("Sent feeding time:" + str(resp))
         self.error_label.text = ""
 
     ###
     # @brief:   Get any existing feeding time payload
     ###
     def getFeedingTimes(self, widget):
-        feeding_times = []
-        self.time_table.data.clear()
-
         try:
             req = requests.get(url = RECIEVE_ALL_TIMES)
             if req == None:
-                print("Uh oh! Things not looking good")
+                logger.error("Uh oh! Things not looking good")
                 self.error_label.text = "Received invalid feeding times:", req
                 return
             if req.status_code != 200:
-                print("Uh oh! Not success:", req.status_code)
+                logger.error("Uh oh! Not success:" + str(req.status_code))
                 self.error_label.text = "Failed to recieve request:" + str(req.status_code)
                 return
 
         except OSError as err:
-            print("OSError: Uh oh! Looks like you are in trouble...", err)
+            logger.error("OSError: Uh oh! Looks like you are in trouble..." + utils.StrError(err))
             self.error_label.text = "Error on communicating with machine"
             return
 
+        feeding_times = []
+        self.time_table.data.clear()
         resp = req.json()
         for i in range(len(resp)):
             feeding_times.append((resp[i]['hour'],resp[i]['minute']))
-            time = self.prettyTime(feeding_times[len(feeding_times) - 1][0], feeding_times[len(feeding_times) - 1][1])
+            time = utils.PrettyTime(feeding_times[len(feeding_times) - 1])
             self.time_table.data.insert(i, time)
-        print("Recieved feeding times:", feeding_times)
+        logger.error("Recieved feeding times:" + str(feeding_times))
         self.send_butt.enabled = True
         self.error_label.text = ""
-
-    def prettyTime(self, hour, minute):
-        return str(hour) + ":" + (str(minute) if int(minute) > 9 else "0" + str(minute))
 
 def main():
     return CatFeeder()
