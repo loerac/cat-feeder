@@ -138,7 +138,7 @@ class CatFeeder(toga.App):
                 return
             if req.status_code != 200:
                 logger.error("Uh oh! Request unsuccessful: HTTP(" + str(req.status_code) + ")")
-                self.error_label.text = "Failed to recieve request: HTTP(" + str(req.status_code) + ")"
+                self.error_label.text = "Failed to receive request: HTTP(" + str(req.status_code) + ")"
                 return
 
         except OSError as err:
@@ -153,7 +153,7 @@ class CatFeeder(toga.App):
             feeding_times.append((resp[i]['hour'],resp[i]['minute']))
             time = utils.PrettyTime(feeding_times[len(feeding_times) - 1])
             self.time_table.data.insert(i, time)
-        logger.error("Recieved feeding times:" + str(feeding_times))
+        logger.info("Received feeding times:" + str(feeding_times))
         self.send_butt.enabled = True
         self.error_label.text = ""
 

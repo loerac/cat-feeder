@@ -17,8 +17,7 @@ const LogFilename string = "/tmp/cat-feeder.log"
 
 /**
  * @brief:  Checks to see if the log file is present from a previous
- *          execution. If true, roll over log with timestamp. Then
- *          open a new log file.
+ *          execution. If true, roll over log with timestamp.
  *
  * @return: nil on success, else error
  **/
@@ -39,7 +38,8 @@ func InitGolog() error {
 }
 
 /**
- * @brief:  Create a Golog with prefix and filepath
+ * @brief:  Opens and creates a log file. If no errors opening/creating,
+ *          then create a Golog with prefix and file pointer
  *
  * @arg:    prefix - String to prepend to the log message
  *

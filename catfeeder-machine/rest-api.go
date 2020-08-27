@@ -37,7 +37,7 @@ func CreateNewFeedTime(w http.ResponseWriter, r *http.Request) {
     json.NewEncoder(w).Encode(feeding_times)
     mut.Unlock()
 
-    rest_log.Println("Recieved feeding times:" + FeedingTimeStr(ft))
+    rest_log.Println("Received feeding times:" + FeedingTimeStr(ft))
 }
 
 /**

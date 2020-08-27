@@ -19,7 +19,7 @@ def Applogger(name):
     return logger
 
 ###
-# @brief:   Turn the feeding time input to the time formate
+# @brief:   Turn the feeding time input to the time format
 #
 # @arg:     feeding_time - Array holding the hour and minute
 #
@@ -36,7 +36,7 @@ def PrettyTime(feeding_times):
 #
 # @arg:     err - OSError from try-except
 #
-# @return:  String formated error message
+# @return:  String formatted error message
 ###
 def StrOSError(err):
     return str(err.args[0].reason)[str(err.args[0].reason).find(":") + 2:]
