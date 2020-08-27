@@ -76,17 +76,17 @@ class CatFeeder(toga.App):
     ###
     def addTime(self, widget):
         if self.hour_input.value == "":
-            print("Hour time is missing")
+            self.error_label.text = "Missing time for hour"
             return
         if self.min_input.value == "":
-            print("Minute time is missing")
+            self.error_label.text = "Missing time for minute"
             return
 
         self.send_butt.enabled = True
         feeding_times.append((self.hour_input.value,self.min_input.value))
         time = utils.PrettyTime(feeding_times[len(feeding_times) - 1])
         self.time_table.data.insert(0, time)
-        logger.error("New Time: " + str(time))
+        logger.info("New Time: " + str(time))
         self.error_label.text = ""
 
     ###
@@ -102,7 +102,7 @@ class CatFeeder(toga.App):
     ###
     def sendFeedingTime(self, widget):
         if len(feeding_times) == 0:
-            print("No times given")
+            self.error_label.text = "No feeding times present"
             return
 
         send_feeding_times = []
@@ -121,12 +121,12 @@ class CatFeeder(toga.App):
                 data = str(json.dumps(send_feeding_times))
             )
         except OSError as err:
-            logger.error("OSError: Uh oh! Looks like you are in trouble..." + utils.StrError(err))
-            self.error_label.text = "Error on communicating with machine"
+            logger.error("Uh oh! Looks like trouble found you: error(" + utils.StrOSError(err) + ")")
+            self.error_label.text = "Error on communicating with machine: error(" + utils.StrOSError(err) + ")"
             return
 
         resp = req.text
-        logger.error("Sent feeding time:" + str(resp))
+        logger.info("Sent feeding time:" + str(resp))
         self.error_label.text = ""
 
     ###
@@ -136,17 +136,17 @@ class CatFeeder(toga.App):
         try:
             req = requests.get(url = RECIEVE_ALL_TIMES)
             if req == None:
-                logger.error("Uh oh! Things not looking good")
+                logger.error("Uh oh! Received invalid feeding times: Feeding-Time(" + req + ")")
                 self.error_label.text = "Received invalid feeding times:", req
                 return
             if req.status_code != 200:
-                logger.error("Uh oh! Not success:" + str(req.status_code))
-                self.error_label.text = "Failed to recieve request:" + str(req.status_code)
+                logger.error("Uh oh! Request unsuccessful: HTTP(" + str(req.status_code) + ")")
+                self.error_label.text = "Failed to recieve request: HTTP(" + str(req.status_code) + ")"
                 return
 
         except OSError as err:
-            logger.error("OSError: Uh oh! Looks like you are in trouble..." + utils.StrError(err))
-            self.error_label.text = "Error on communicating with machine"
+            logger.error("Uh oh! Looks like trouble found you: error(" + utils.StrOSError(err) + ")")
+            self.error_label.text = "Error on communicating with machine: error(" + utils.StrOSError(err) + ")"
             return
 
         feeding_times = []
