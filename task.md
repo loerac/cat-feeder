@@ -1,8 +1,9 @@
 # All
 - [ ] loera - 007: Create a logger for both the machine and app
   * [ ] It should rollover any existing logs and then create a new log
-    > Currently have the machine logs completed, still working on the app portion
-- [ ] loera - 008: Update the configuration to install what is needed and where executables/logs should be stored in
+- [ ] 008: Update the configuration to install what is needed and where executables/logs should be stored in
+- [ ] loera - 011: Create a method sharing common variables between the app and machine
+  * In TID007, both of them use the file name "/tmp/cat-feeder.log", this should be shared instead of written in both of them
 
 # Machine
 - [x] loera - 001: Monitor the time 
@@ -12,10 +13,10 @@
   * [x] POST new feeding times
   * [x] GET all/single feeding times
   * [ ] POST to feed cat
-- [ ] loera - 003: Get them servo motors working
+- [ ] 003: Get them servo motors working
   * [ ] Get the motor to open and close
   * [ ] Add it to the monitoring
-- [ ] loera - 005: Communication from machine and app
+- [ ] 005: Communication from machine and app
   * Over WiFi?
   * Bluetooth?
   * Host app on a webserver and let the user navigate to webpage?
