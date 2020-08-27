@@ -38,14 +38,14 @@ func TimeToFeedCat() bool {
 }
 
 func init() {
-    if err := LoggerInit(); err != nil {
+    if err := InitGolog(); err != nil {
         fmt.Println("Failed to initialize log rollover:", err)
     }
 }
 
 func main() {
     /* Open log file */
-    cat_log := NewLogger("cat-manager")
+    cat_log := OpenGolog("cat-manager")
 
     /* Run REST API */
     go HandleRequests()

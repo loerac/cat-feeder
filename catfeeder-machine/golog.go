@@ -7,7 +7,7 @@ import (
     "time"
 )
 
-type Logger struct {
+type Golog struct {
     Lock        sync.Mutex
     Fpath       *os.File
     Prefix      string
@@ -22,7 +22,7 @@ const LogFilename string = "/tmp/cat-feeder.log"
  *
  * @return: nil on success, else error
  **/
-func LoggerInit() error {
+func InitGolog() error {
     finfo, err := os.Stat(LogFilename)
     if err == nil {
         path := strings.Split(LogFilename, finfo.Name())[0]
@@ -39,20 +39,20 @@ func LoggerInit() error {
 }
 
 /**
- * @brief:  Create a Logger with prefix and filepath
+ * @brief:  Create a Golog with prefix and filepath
  *
  * @arg:    prefix - String to prepend to the log message
  *
  * @return: New logger, nil if error
  **/
-func NewLogger(prefix string) *Logger {
+func OpenGolog(prefix string) *Golog {
     fpath, err := os.OpenFile(LogFilename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
 
     if err != nil {
         return nil
     }
 
-    return &Logger{
+    return &Golog{
         Prefix: prefix,
         Fpath: fpath,
     }
@@ -69,10 +69,10 @@ func NewLogger(prefix string) *Logger {
  * @return: int - How many bytes were written
  *          error - Errors while writing
  **/
-func (l *Logger) Println(msg string) (int, error) {
-    l.Lock.Lock()
-    defer l.Lock.Unlock()
+func (gl *Golog) Println(msg string) (int, error) {
+    gl.Lock.Lock()
+    defer gl.Lock.Unlock()
 
-    output := []byte(time.Now().Format("2006/01/02 15:04:05") + " " + l.Prefix + " - " + msg + "\n")
-    return l.Fpath.Write(output)
+    output := []byte(time.Now().Format("2006/01/02 15:04:05") + " " + gl.Prefix + " - " + msg + "\n")
+    return gl.Fpath.Write(output)
 }

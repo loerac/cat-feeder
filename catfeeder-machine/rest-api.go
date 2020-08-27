@@ -9,7 +9,7 @@ import (
     "github.com/gorilla/mux"
 )
 
-var rest_log *Logger
+var rest_log *Golog
 
 func FeedingTimeStr(feeding_times []FeedingTimes) string {
     ft_str := ""
@@ -83,7 +83,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
  * @brief:  Handle to monitor all the CRUD methods.
  **/
 func HandleRequests() {
-    rest_log = NewLogger("rest-api")
+    rest_log = OpenGolog("rest-api")
 
     myRouter := mux.NewRouter().StrictSlash(true)
     myRouter.HandleFunc("/", HomePage)
