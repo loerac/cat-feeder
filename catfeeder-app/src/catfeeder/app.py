@@ -1,13 +1,10 @@
 """
 An app to feed the cats
 """
-import errno
 import json
 import requests
-import os
 import toga
 import utils
-from requests.exceptions import ConnectionError
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
