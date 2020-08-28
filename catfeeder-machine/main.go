@@ -12,6 +12,7 @@ type FeedingTimes struct {
     Minute  int     `json:"minute"`
 }
 
+var ok = true
 var has_been_fed bool = false
 var feeding_times []FeedingTimes
 var mut sync.Mutex
@@ -46,15 +47,22 @@ func init() {
     err := InitCommon()
     if err != nil {
         fmt.Println("Failed to initialize Common:", err)
+        ok = false
     }
 
     err = InitGolog()
-    if err != nil {
+    if (err != nil) && ok {
         fmt.Println("Failed to initialize Golog:", err)
+        ok = false
     }
 }
 
 func main() {
+    if !ok {
+        fmt.Println("Error in initialization")
+        return
+    }
+
     /* Open log file */
     cat_log := OpenGolog("cat-manager")
 
