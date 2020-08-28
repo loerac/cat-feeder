@@ -124,7 +124,7 @@ class CatFeeder(toga.App):
 
         resp = req.text
         logger.info("Sent feeding time:" + str(resp))
-        self.error_label.text = ""
+        self.error_label.text = "Feeding times sent"
 
     ###
     # @brief:   Get any existing feeding time payload
@@ -155,7 +155,7 @@ class CatFeeder(toga.App):
             self.time_table.data.insert(i, time)
         logger.info("Received feeding times:" + str(feeding_times))
         self.send_butt.enabled = True
-        self.error_label.text = ""
+        self.error_label.text = "Received feeding times"
 
 def main():
     return CatFeeder()
