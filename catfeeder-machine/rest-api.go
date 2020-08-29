@@ -100,6 +100,6 @@ func HandleRequests() {
     myRouter.HandleFunc("/feedingTimes", ReturnAllFeedingTimes).Methods("GET")
     myRouter.HandleFunc("/feedingTime/{id}", ReturnSingleFeedingTime).Methods("GET")
 
-    rest_log.Println("Listening on 127.0.0.1:6969")
-    rest_log.Println(http.ListenAndServe(":6969", myRouter).Error())
+    rest_log.Println("Listening on https://canescent-saola-6329.dataplicity.io:80")
+    rest_log.Println(http.ListenAndServe("https://canescent-saola-6329.dataplicity.io:80", myRouter).Error())
 }
