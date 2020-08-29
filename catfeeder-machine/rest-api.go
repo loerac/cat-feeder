@@ -47,6 +47,13 @@ func CreateFeedNow(w http.ResponseWriter, r *http.Request) {
     fmt.Println("Place holder to feed cat now, will update once TID003 is complete")
 }
 
+/***
+ * @brief:  Handle to feed the cat.
+ ***/
+func CreateFeedNow(w http.ResponseWriter, r *http.Request) {
+    fmt.Println("Place holder to feed cat now, will update once TID003 is complete")
+}
+
 /**
  * @brief:  Handle for returning a specific feeding time.
  **/
