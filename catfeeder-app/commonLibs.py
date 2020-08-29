@@ -15,3 +15,9 @@ class CommonLibs():
     ###
     def GetLogFilepath(self):
         return self.common_names['log_filepath']
+
+    ###
+    # @brief:   Return the path for the logfile
+    ###
+    def GetFQDN(self):
+        return self.common_names['FQDN']

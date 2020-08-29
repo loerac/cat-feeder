@@ -1,20 +1,24 @@
 """
 An app to feed the cats
 """
+import commonLibs
 import json
 import requests
 import toga
 import utils
+import TLSAdapter
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
-BASE_URL = "http://localhost:6969"
+BASE_URL = commonLibs.CommonLibs().GetFQDN()
 CREATE_TIME = BASE_URL + "/feedingTime"
 RECIEVE_A_TIME = BASE_URL + "/feedingTime"
 RECIEVE_ALL_TIMES = BASE_URL + "/feedingTimes"
 
 feeding_times = []
 logger = utils.Applogger('cat-app')
+cat_session = requests.Session()
+cat_session.mount(BASE_URL, TLSAdapter.Tls12HttpAdapter())
 
 class CatFeeder(toga.App):
     # TODO: Come up with better variable names
@@ -113,7 +117,7 @@ class CatFeeder(toga.App):
             send_feeding_times.append(data)
 
         try:
-            req = requests.post(
+            req = cat_session.post(
                 url = CREATE_TIME,
                 data = str(json.dumps(send_feeding_times))
             )
@@ -131,10 +135,10 @@ class CatFeeder(toga.App):
     ###
     def getFeedingTimes(self, widget):
         try:
-            req = requests.get(url = RECIEVE_ALL_TIMES)
-            if req == None:
-                logger.error("Uh oh! Received invalid feeding times: Feeding-Time(" + req + ")")
-                self.error_label.text = "Received invalid feeding times:", req
+            req = cat_session.get(url = RECIEVE_ALL_TIMES)
+            if req.json() is None:
+                logger.error("Uh oh! Received invalid feeding times: Feeding-Time(" + str(req) + ")")
+                self.error_label.text = "Received invalid feeding times:", str(req)
                 return
             if req.status_code != 200:
                 logger.error("Uh oh! Request unsuccessful: HTTP(" + str(req.status_code) + ")")
