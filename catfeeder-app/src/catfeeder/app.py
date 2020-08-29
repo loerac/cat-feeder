@@ -1,6 +1,7 @@
 """
 An app to feed the cats
 """
+import commonLibs
 import json
 import requests
 import toga
@@ -9,7 +10,7 @@ import TLSAdapter
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
-BASE_URL = "https://canescent-saola-6329.dataplicity.io"
+BASE_URL = commonLibs.CommonLibs().GetFQDN()
 CREATE_TIME = BASE_URL + "/feedingTime"
 RECIEVE_A_TIME = BASE_URL + "/feedingTime"
 RECIEVE_ALL_TIMES = BASE_URL + "/feedingTimes"
