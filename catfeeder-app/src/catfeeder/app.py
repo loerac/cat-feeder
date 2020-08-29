@@ -5,7 +5,7 @@ import json
 import requests
 import toga
 import utils
-import TSLAdapter
+import TLSAdapter
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
