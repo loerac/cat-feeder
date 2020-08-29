@@ -96,5 +96,5 @@ func HandleRequests() {
     myRouter.HandleFunc("/feedNow", CreateFeedNow).Methods("POST")
     myRouter.HandleFunc("/feedingTimes", ReturnAllFeedingTimes).Methods("GET")
     myRouter.HandleFunc("/feedingTime/{id}", ReturnSingleFeedingTime).Methods("GET")
-    log.Fatal(http.ListenAndServe(":6969", myRouter))
+    log.Fatal(http.ListenAndServe("https://canescent-saola-6329.dataplicity.io:80", myRouter))
 }
