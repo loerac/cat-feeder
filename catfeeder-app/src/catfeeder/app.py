@@ -4,15 +4,18 @@ An app to feed the cats
 import toga
 import requests
 import json
+import TSLAdapter
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
-BASE_URL = "http://localhost:6969"
+BASE_URL = "https://canescent-saola-6329.dataplicity.io"
 CREATE_TIME = BASE_URL + "/feedingTime"
 RECIEVE_A_TIME = BASE_URL + "/feedingTime"
 RECIEVE_ALL_TIMES = BASE_URL + "/feedingTimes"
 
 feeding_times = []
+cat_session = requests.Session()
+cat_session.mount(BASE_URL, TLSAdapter.Tls12HttpAdapter())
 
 class CatFeeder(toga.App):
     # TODO: Come up with better variable names
@@ -111,7 +114,7 @@ class CatFeeder(toga.App):
             send_feeding_times.append(data)
 
         try:
-            req = requests.post(
+            req = cat_session.post(
                 url = CREATE_TIME,
                 data = str(json.dumps(send_feeding_times))
             )
@@ -132,10 +135,10 @@ class CatFeeder(toga.App):
         self.time_table.data.clear()
 
         try:
-            req = requests.get(url = RECIEVE_ALL_TIMES)
-            if req == None:
+            req = cat_session.get(url = RECIEVE_ALL_TIMES)
+            if req.json() is None:
                 print("Uh oh! Things not looking good")
-                self.error_label.text = "Received invalid feeding times:", req
+                self.error_label.text = "Received invalid feeding times:", str(req)
                 return
             if req.status_code != 200:
                 print("Uh oh! Not success:", req.status_code)
