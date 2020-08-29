@@ -4,7 +4,7 @@ An app to feed the cats
 import toga
 import requests
 import json
-import TSLAdapter
+import TLSAdapter
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
