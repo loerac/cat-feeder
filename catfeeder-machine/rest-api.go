@@ -47,13 +47,6 @@ func CreateFeedNow(w http.ResponseWriter, r *http.Request) {
     fmt.Println("Place holder to feed cat now, will update once TID003 is complete")
 }
 
-/***
- * @brief:  Handle to feed the cat.
- ***/
-func CreateFeedNow(w http.ResponseWriter, r *http.Request) {
-    fmt.Println("Place holder to feed cat now, will update once TID003 is complete")
-}
-
 /**
  * @brief:  Handle for returning a specific feeding time.
  **/
@@ -107,6 +100,9 @@ func HandleRequests() {
     myRouter.HandleFunc("/feedingTimes", ReturnAllFeedingTimes).Methods("GET")
     myRouter.HandleFunc("/feedingTime/{id}", ReturnSingleFeedingTime).Methods("GET")
 
-    rest_log.Println("Listening on https://canescent-saola-6329.dataplicity.io:80")
-    rest_log.Println(http.ListenAndServe("https://canescent-saola-6329.dataplicity.io:80", myRouter).Error())
+    listenOn := "localhost:" + GetPORT()
+    rest_log.Println("Listening on " + listenOn)
+
+    rest_log.Println("Connect to " + GetFQDN() + " for more information")
+    rest_log.Println(http.ListenAndServe(listenOn, myRouter).Error())
 }

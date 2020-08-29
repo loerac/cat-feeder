@@ -1,3 +1,5 @@
 {
-  "log_filepath":"/tmp/cat-feeder.log"
+  "log_filepath":"/tmp/cat-feeder.log",
+  "FQDN":"https://canescent-saola-6329.dataplicity.io/",
+  "PORT":"80"
 }

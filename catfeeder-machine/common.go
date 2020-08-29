@@ -8,6 +8,8 @@ import (
 
 type CommonNames struct {
     Common_Names    string `json:"log_filepath"`
+    FQDN            string `json:"FQDN"`
+    PORT            string `json:"PORT"`
 }
 
 var common_names CommonNames
@@ -38,4 +40,22 @@ func InitCommon() error {
  ***/
 func GetLogFilepath() string {
     return common_names.Common_Names
+}
+
+/***
+ * @brief:  Return the Fully Qualified Domain Name
+ *
+ * @return: See @brief
+ ***/
+func GetFQDN() string {
+    return common_names.FQDN
+}
+
+/***
+ * @brief:  Return the port that the server is listening on
+ *
+ * @return: See @brief
+ ***/
+func GetPORT() string {
+    return common_names.PORT
 }
