@@ -37,7 +37,16 @@ func TimeToFeedCat() bool {
     return false
 }
 
+func init() {
+    if err := InitGolog(); err != nil {
+        fmt.Println("Failed to initialize log rollover:", err)
+    }
+}
+
 func main() {
+    /* Open log file */
+    cat_log := OpenGolog("cat-manager")
+
     /* Run REST API */
     go HandleRequests()
 
@@ -45,10 +54,10 @@ func main() {
     go func() {
         for {
             if TimeToFeedCat() && !has_been_fed {
-                fmt.Println("Time to feed cats")
+                cat_log.Println("Time to feed cats")
                 has_been_fed = true
             } else if !TimeToFeedCat() {
-                fmt.Println("Not time to feed cats")
+                cat_log.Println("Not time to feed cats")
                 has_been_fed = false
             }
             time.Sleep(10 * time.Second)
