@@ -9,6 +9,7 @@ from toga.style.pack import COLUMN, ROW
 
 BASE_URL = "http://localhost:6969"
 CREATE_TIME = BASE_URL + "/feedingTime"
+CREATE_FEED_NOW = BASE_URL + "/feedNow"
 RECIEVE_A_TIME = BASE_URL + "/feedingTime"
 RECIEVE_ALL_TIMES = BASE_URL + "/feedingTimes"
 
@@ -34,11 +35,13 @@ class CatFeeder(toga.App):
 
         add_to_table_butt = toga.Button('Add time', on_press=self.addTime, style=Pack(padding=10))
         clear_table_butt = toga.Button('Clear times', on_press=self.clearTable, style=Pack(padding=10))
+        feed_now_butt = toga.Button('Feed Now', on_press=self.feedNow, style=Pack(padding=10))
         self.send_butt = toga.Button('Send time', on_press=self.sendFeedingTime, style=Pack(padding=10))
         get_butt = toga.Button('Get times', on_press=self.getFeedingTimes, style=Pack(padding=10))
         self.send_butt.enabled = False
         butt_box.add(add_to_table_butt)
         butt_box.add(clear_table_butt)
+        butt_box.add(feed_now_butt)
         butt_box.add(self.send_butt)
         butt_box.add(get_butt)
 
@@ -91,6 +94,20 @@ class CatFeeder(toga.App):
         feeding_times = []
         self.time_table.data.clear()
         self.send_butt.enabled = False
+
+    ###
+    # @brief:	Send command to feed the cat now
+    ###
+    def feedNow(self, widget):
+        try:
+            req = requests.post(
+                url = CREATE_FEED_NOW
+            )
+        except OSError as err:
+            print("OSError: Uh oh! Looks like you dun fucked up...", err)
+            self.error_label.text = "Error on communicating with machine"
+            return
+        # TODO add response for cat was fed
 
     ###
     # @brief:   Send the feeding time payload
